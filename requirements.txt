@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""
+Requirements file for E-commerce Data Pipeline
+
+This file lists all the Python package dependencies required for the e-commerce data pipeline.
+"""
+
+# Core dependencies
+pandas==2.0.0
+numpy==1.24.3
+pyspark==3.4.0
+pyarrow==12.0.0
+faker==18.4.0
+
+# Data processing
+scikit-learn==1.2.2
+openpyxl==3.1.2
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Visualization and core dependencies
+streamlit==1.29.0
+pandas==2.1.4
+numpy==1.26.2
+plotly==5.18.0
+matplotlib==3.7.1
+seaborn==0.12.2
+pyarrow==12.0.0
+python-dateutil==2.8.2
+python-json-logger==2.0.7
+
+# Monitoring and logging
+python-json-logger==2.0.7
+
+# Orchestration
+prefect==2.10.8
+apache-airflow==2.6.1
+
+# Storage
+delta-spark==2.4.0
+fsspec==2023.4.0
+
+# Monitoring and logging
+prometheus-client==0.16.0
+python-json-logger==2.0.7

@@ -1,0 +1,45 @@
+Got it! Here's a **brief, credit-efficient version** of the prompt (under 1000 tokens) that still **challenges Manus AI** and covers all core aspects of an advanced data engineering task:
+
+---
+
+### **Prompt for Manus AI Agent (Advanced Data Engineering)**
+
+You are a senior data engineer. Build an end-to-end, scalable data pipeline for a mock e-commerce platform. The goal is to simulate ingestion, transformation, and delivery of analytics-ready data.
+
+**Requirements:**
+
+1. **Data Ingestion:**  
+   Simulate 3 sources:  
+   - `user_activity.json` (streaming)  
+   - `orders.csv` (daily batch)  
+   - `inventory.xlsx` (weekly batch)  
+   Handle schema evolution and bad data.
+
+2. **Processing & Transformation:**  
+   Use Apache Spark or dbt. Clean, normalize, join datasets. Handle nulls, duplicates, type mismatches. Compute KPIs: total revenue, top products, user retention.
+
+3. **Data Storage:**  
+   Follow a lakehouse model (`bronze/silver/gold`). Use partitioning and Parquet format.
+
+4. **Orchestration:**  
+   Use Apache Airflow or Prefect. Create DAGs for daily/weekly runs with dependencies and failure alerts.
+
+5. **Scalability:**  
+   Simulate large datasets (millions of records). Optimize for performance (partitioning, caching).
+
+6. **Monitoring:**  
+   Implement basic logging and alerting for failures and anomalies.
+
+7. **Documentation & Output:**  
+   Include architecture diagram, folder structure, tech stack, and setup guide. Bonus: Visualize KPIs with Streamlit or Dash.
+
+**Optional Stretch Goals:**  
+- Add CI/CD (GitHub Actions)  
+- Use Great Expectations for data validation  
+- Mock a feature store setup
+
+Ensure the code is modular, testable, and production-ready. Push everything to a GitHub repo with a clear README.
+
+---
+
+Let me know if you'd like to further shrink or simplify it!
