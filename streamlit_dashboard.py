@@ -32,7 +32,7 @@ st.set_page_config(
 )
 
 # Define paths
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 MONITORING_DIR = os.path.join(BASE_DIR, "monitoring")
 
@@ -510,5 +510,30 @@ def render_pipeline_health(data):
         st.plotly_chart(fig, use_container_width=True)
         
         # Show total storage size
-    total_size = health_data["bronze_size_gb"].iloc[0] + health_data["silver_size_gb"].iloc[0] + health_data["gold_size_gb"].iloc[0]
+        total_size = health_data["bronze_size_gb"].iloc[0] + health_data["silver_size_gb"].iloc[0] + health_data["gold_size_gb"].iloc[0]
+        st.metric("Total Storage Size", f"{total_size:.2f} GB")
+
+def main():
+    """Main function to run the dashboard."""
+    # Load data
+    data = load_data()
+    
+    # Render dashboard components
+    render_header()
+    render_kpi_metrics(data)
+    render_revenue_chart(data)
+    
+    # Create two columns for charts
+    col1, col2 = st.columns(2)
+    with col1:
+        render_top_products(data)
+    with col2:
+        render_category_breakdown(data)
+    
+    render_user_retention(data)
+    render_data_quality(data)
+    render_pipeline_health(data)
+
+if __name__ == "__main__":
+    main()
 
