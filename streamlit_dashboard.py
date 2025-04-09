@@ -551,6 +551,13 @@ def main():
         st.error(f"An error occurred: {str(e)}")
         st.exception(e)
 
+# Add these requirements to a requirements.txt file in your project root:
+# streamlit
+# plotly
+# pandas
+# numpy
+
 if __name__ == "__main__":
+    # This is the standard Streamlit entry point
     main()
 
