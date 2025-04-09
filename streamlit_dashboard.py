@@ -31,14 +31,21 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Define paths
+# Define paths - make them work in both local and Streamlit Cloud environments
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 MONITORING_DIR = os.path.join(BASE_DIR, "monitoring")
 
+# Create directories if they don't exist
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(MONITORING_DIR, exist_ok=True)
+
 # Create sample data if real data doesn't exist yet
 def create_sample_data():
     """Create sample data for demonstration purposes."""
+    # Set seed for reproducibility
+    np.random.seed(42)
+    
     # Sample revenue data
     revenue_data = pd.DataFrame({
         "date": pd.date_range(start="2023-01-01", periods=90, freq="D"),
@@ -51,6 +58,12 @@ def create_sample_data():
     revenue_data["total_revenue"] = revenue_data["total_revenue"] * (1 + 0.3 * (revenue_data["date"].dt.dayofweek == 5))
     revenue_data["total_revenue"] = revenue_data["total_revenue"] * (1 + 0.2 * (revenue_data["date"].dt.dayofweek == 6))
     
+    # Ensure no negative values
+    revenue_data["total_revenue"] = revenue_data["total_revenue"].clip(lower=0)
+    revenue_data["order_count"] = revenue_data["order_count"].clip(lower=0)
+    revenue_data["items_sold"] = revenue_data["items_sold"].clip(lower=0)
+    
+    # Rest of the function remains the same
     # Sample product data
     categories = ["Electronics", "Clothing", "Home", "Books", "Sports"]
     products = []
@@ -66,9 +79,9 @@ def create_sample_data():
             "product_id": product_id,
             "product_name": product_name,
             "category": category,
-            "revenue": revenue,
-            "quantity_sold": quantity,
-            "avg_price": revenue / quantity if quantity > 0 else 0
+            "revenue": max(0, revenue),  # Ensure no negative values
+            "quantity_sold": max(0, int(quantity)),  # Ensure no negative values
+            "avg_price": max(0, revenue / quantity if quantity > 0 else 0)  # Ensure no negative values
         })
     
     product_data = pd.DataFrame(products)
@@ -515,24 +528,28 @@ def render_pipeline_health(data):
 
 def main():
     """Main function to run the dashboard."""
-    # Load data
-    data = load_data()
-    
-    # Render dashboard components
-    render_header()
-    render_kpi_metrics(data)
-    render_revenue_chart(data)
-    
-    # Create two columns for charts
-    col1, col2 = st.columns(2)
-    with col1:
-        render_top_products(data)
-    with col2:
-        render_category_breakdown(data)
-    
-    render_user_retention(data)
-    render_data_quality(data)
-    render_pipeline_health(data)
+    try:
+        # Load data
+        data = load_data()
+        
+        # Render dashboard components
+        render_header()
+        render_kpi_metrics(data)
+        render_revenue_chart(data)
+        
+        # Create two columns for charts
+        col1, col2 = st.columns(2)
+        with col1:
+            render_top_products(data)
+        with col2:
+            render_category_breakdown(data)
+        
+        render_user_retention(data)
+        render_data_quality(data)
+        render_pipeline_health(data)
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
+        st.exception(e)
 
 if __name__ == "__main__":
     main()
